@@ -1,0 +1,71 @@
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from "typeorm";
+import { Apelacion } from "./apelacion.entity";
+import { TipoParte } from "./tipo-parte.entity";
+import { CatSexo } from "./catalogo-sexo.entity";
+import { Relacion } from "./relacion.entity";
+
+@Entity({ name: 'OFA_ApelacionPartes' })
+export class ApelacionParte {
+
+    @PrimaryGeneratedColumn({ name: 'IdApelacionParte' })
+    id!: number;
+
+    @Column({ 
+        name: 'Nombre', 
+        type: 'varchar', 
+        length: 300, 
+        nullable: true 
+    })
+    nombre!: string;
+
+    @Column({ 
+        name: 'Direccion', 
+        type: 'varchar', 
+        length: 25, 
+        nullable: true 
+    })
+    direccion!: string;
+
+    @Column({ 
+        name: 'MenorEdad', 
+        type: 'bit', 
+        default: false 
+    })
+    menorEdad!: boolean;
+
+    @Column({ 
+        name: 'Activo', 
+        type: 'bit', 
+    })
+    activo: boolean = true;
+
+    // --- Relaciones ManyToOne (BelongsTo) ---
+
+    @ManyToOne(() => Apelacion)
+    @JoinColumn({ name: 'IdApelacion' })
+    apelacion!: Apelacion;
+
+    @ManyToOne(() => TipoParte)
+    @JoinColumn({ name: 'IdCatTipoParte' })
+    tipoParte!: TipoParte;
+
+    @ManyToOne(() => CatSexo)
+    @JoinColumn({ name: 'IdCatSexo' })
+    sexo!: CatSexo;
+
+    // --- Relaciones OneToMany (HasMany) ---
+
+    @OneToMany(() => Relacion, (relacion) => relacion.ofendido) // O procesado, según la lógica de navegación
+    relaciones!: Relacion[];
+
+    // --- Columnas de IDs planos ---
+
+    @Column({ name: 'IdApelacion' })
+    idApelacion!: number;
+
+    @Column({ name: 'IdCatTipoParte' })
+    idTipoParte!: number;
+
+    @Column({ name: 'IdCatSexo' })
+    idSexo!: number;
+}

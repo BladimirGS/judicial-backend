@@ -1,0 +1,46 @@
+import { SearchRepository } from "../repositories/search.repository";
+import { SearchCatalogosDTO } from "../dtos/search-catalogos.dto";
+import { SearchParamsDTO } from "../dtos/search-params.dto";
+
+export const SearchService = {
+    async getFormDataBuscador(): Promise<SearchCatalogosDTO> {
+        return await SearchRepository.getSearchCatalogos();
+    },
+
+    async search(params: SearchParamsDTO) {
+        const resultados = await SearchRepository.searchApelaciones(params);
+
+        return resultados.map(apelacion => ({
+            id: apelacion.id,
+            folioOficialia: apelacion.folioOficialia,
+            folioApelacion: apelacion.folioApelacion,
+            expedienteCausa: apelacion.expedienteCausa,
+            fojas: apelacion.fojas,
+            esReposicion: apelacion.esReposicion,
+            fechaAuto: apelacion.fechaAuto,
+            asunto: apelacion.asunto,
+            lugarHechos: apelacion.lugarHechos,
+
+            // Aplanamos catálogos
+            sala: apelacion.sala?.descripcion ?? null,
+            nomenclatura: apelacion.nomenclatura?.descripcion ?? null,
+            tipoApelacion: apelacion.tipoApelacion?.descripcion ?? null,
+
+            // Mapeo de anexos
+            anexos: apelacion.anexos?.map(a => ({
+                id: a.id,
+                descripcion: a.idAnexo > 0 ? a.anexo?.descripcion : a.otroAnexo,
+                esValor: Boolean(a.esValor),
+                monto: a.monto ?? null
+            })) ?? [],
+
+            // Mapeo plano de partes (flatmap para tabla de resultados)
+            partes: apelacion.relaciones?.flatMap(r => {
+                const lista = [];
+                if (r.ofendido) lista.push({ tipo: 'OFENDIDO', nombre: r.ofendido.nombre, sexo: r.ofendido.sexo?.descripcion });
+                if (r.procesado) lista.push({ tipo: 'PROCESADO', nombre: r.procesado.nombre, sexo: r.procesado.sexo?.descripcion });
+                return lista;
+            }) ?? []
+        }));
+    }
+};
