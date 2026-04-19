@@ -89,12 +89,10 @@ export const ApelacionService = {
     },
 
     async getFormCatalogos(): Promise<ApelacionCatalogosDTO> {
-        // Delegamos la carga masiva al repositorio
         return await ApelacionRepository.getFormCatalogos();
     },
 
     async create(data: CreateApelacionDTO) {
-        // Podrías agregar lógica de negocio extra aquí antes de guardar
         return await ApelacionRepository.createFullApelacion(data);
     }
 };

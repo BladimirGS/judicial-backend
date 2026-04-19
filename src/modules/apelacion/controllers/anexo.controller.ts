@@ -18,7 +18,6 @@ export const AnexoController = {
         try {
             const { idApelacion, anexos } = req.body;
 
-            // Validación rápida de presencia
             if (!idApelacion || !anexos || anexos.length === 0) {
                 return ResponseUtil.badRequest(res, 'ID de apelación y lista de anexos son requeridos');
             }

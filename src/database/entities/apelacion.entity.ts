@@ -12,6 +12,7 @@ import { CatEtnia } from "./catalogo-etnia.entity";
 import { ApelacionParte } from "./apelacion-parte.entity";
 import { Relacion } from "./relacion.entity";
 import { ApelacionAnexo } from "./apelacion-anexo.entity";
+import { CatMagistrado } from "./catalogo-magistrado.entity";
 
 @Entity({ name: 'OFA_Apelaciones' })
 export class Apelacion {
@@ -70,17 +71,14 @@ export class Apelacion {
     @Column({ name: 'Asunto', length: 300, nullable: true })
     asunto!: string;
 
-    @Column({ name: 'IdMagistradoAsignado', type: 'int', nullable: true })
-    idMagistradoAsignado!: number;
-
-    @Column({ name: 'IdSalaAnterior', type: 'int', nullable: true })
-    idSalaAnterior!: number;
-
     // Relaciones ManyToOne
-
     @ManyToOne(() => CatSala)
     @JoinColumn({ name: 'IdSala' })
     sala!: CatSala;
+
+    @ManyToOne(() => CatSala)
+    @JoinColumn({ name: 'IdSala' })
+    salaAnterior!: CatSala;
 
     @ManyToOne(() => CatMateria)
     @JoinColumn({ name: 'IdCatMateria' })
@@ -106,6 +104,10 @@ export class Apelacion {
     @JoinColumn({ name: 'IdCatJuzgadoOrigen' })
     catJuzgado!: CatJuzgado;
 
+    @ManyToOne(() => CatMagistrado)
+    @JoinColumn({ name: 'IdMagistradoAsignado' })
+    catMagistrado!: CatMagistrado;
+
     @ManyToOne(() => CatMunicipio)
     @JoinColumn({ name: 'IdCatMunicipio' })
     municipio!: CatMunicipio;
@@ -119,7 +121,6 @@ export class Apelacion {
     etnia!: CatEtnia;
 
     // Relaciones OneToMany
-
     @OneToMany(() => ApelacionParte, (parte) => parte.apelacion)
     apelacionPartes!: ApelacionParte[];
 
@@ -131,12 +132,14 @@ export class Apelacion {
 
     // Foreign Keys
     @Column({ name: 'IdSala' }) idSala!: number;
+    @Column({ name: 'IdSalaAnterior' }) idSalaAnterior!: number;
     @Column({ name: 'IdCatMateria' }) idMateria!: number;
     @Column({ name: 'IdCatNomenclatura' }) idNomenclatura!: number;
     @Column({ name: 'IdCatApelacion' }) idApelacion!: number;
     @Column({ name: 'IdCatTipoApelacion' }) idTipoApelacion!: number;
     @Column({ name: 'IdCatTipoEscrito' }) idTipoEscrito!: number;
     @Column({ name: 'IdCatJuzgadoOrigen' }) idJuzgado!: number;
+    @Column({ name: 'IdMagistradoAsignado' }) idMagistradoAsignado!: number;
     @Column({ name: 'IdCatMunicipio' }) idMunicipio!: number;
     @Column({ name: 'IdCatLocalidad' }) idLocalidad!: number;
     @Column({ name: 'IdEtnia' }) idEtnia!: number;

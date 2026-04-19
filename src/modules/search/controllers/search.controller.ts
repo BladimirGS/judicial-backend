@@ -14,11 +14,9 @@ export const SearchController = {
         }
     },
 
-    // En search.controller.ts
     search: async (req: Request, res: Response) => {
         try {
             if (!SearchParamsDTO.hasAtLeastOneParam(req.query)) {
-                // USAMOS EL UTIL:
                 return ResponseUtil.badRequest(res, 'Debe proporcionar al menos un criterio');
             }
 
@@ -26,6 +24,7 @@ export const SearchController = {
             return ResponseUtil.success(res, data);
 
         } catch (error) {
+            console.log(error)
             return ResponseUtil.error(res, 'Error interno en la búsqueda');
         }
     }

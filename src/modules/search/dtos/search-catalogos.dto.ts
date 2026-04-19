@@ -4,5 +4,4 @@ export interface SearchCatalogosDTO {
     salas: CatalogoBaseDTO[];
     nomenclaturas: CatalogoBaseDTO[];
     tiposApelaciones: CatalogoBaseDTO[];
-    tiposEscritos: CatalogoBaseDTO[];
 }

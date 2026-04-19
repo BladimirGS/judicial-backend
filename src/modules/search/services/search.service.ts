@@ -14,17 +14,28 @@ export const SearchService = {
             id: apelacion.id,
             folioOficialia: apelacion.folioOficialia,
             folioApelacion: apelacion.folioApelacion,
-            expedienteCausa: apelacion.expedienteCausa,
+            folioApelacionAnterior: apelacion.folioApelacion,
+            folioOficio: apelacion.folioOficio,
+            
             fojas: apelacion.fojas,
+            expedienteAcumulado: apelacion.expedienteAcumulado,
             esReposicion: apelacion.esReposicion,
+            expedienteCausa: apelacion.expedienteCausa,
             fechaAuto: apelacion.fechaAuto,
+            fechaHoraRecepcion: apelacion.fechaHoraRecepcion,
+            fechaHoraIngresoJuz: apelacion.fechaHoraIngresoJuz,
+            observaciones: apelacion.observaciones,
             asunto: apelacion.asunto,
             lugarHechos: apelacion.lugarHechos,
 
             // Aplanamos catálogos
             sala: apelacion.sala?.descripcion ?? null,
+            salaAnterior: apelacion.sala?.descripcion ?? null,
+            juzgadoOrigen: apelacion.catJuzgado?.descripcion ?? null,
+            magistradoAsignado: apelacion.catMagistrado?.descripcion ?? null,
             nomenclatura: apelacion.nomenclatura?.descripcion ?? null,
             tipoApelacion: apelacion.tipoApelacion?.descripcion ?? null,
+            tipoEscrito: apelacion.tipoEscrito?.descripcion ?? null,
 
             // Mapeo de anexos
             anexos: apelacion.anexos?.map(a => ({
@@ -34,7 +45,7 @@ export const SearchService = {
                 monto: a.monto ?? null
             })) ?? [],
 
-            // Mapeo plano de partes (flatmap para tabla de resultados)
+            // Mapeo plano de partes
             partes: apelacion.relaciones?.flatMap(r => {
                 const lista = [];
                 if (r.ofendido) lista.push({ tipo: 'OFENDIDO', nombre: r.ofendido.nombre, sexo: r.ofendido.sexo?.descripcion });

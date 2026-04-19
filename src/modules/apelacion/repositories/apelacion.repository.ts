@@ -6,6 +6,7 @@ import { CatDelito } from "../../../database/entities/catalogo-delito.entity";
 import { CatEtnia } from "../../../database/entities/catalogo-etnia.entity";
 import { CatJuzgado } from "../../../database/entities/catalogo-juzgado.entity";
 import { CatLocalidad } from "../../../database/entities/catalogo-localidad.entity";
+import { CatMagistrado } from "../../../database/entities/catalogo-magistrado.entity";
 import { CatMateria } from "../../../database/entities/catalogo-materia.entity";
 import { CatMunicipio } from "../../../database/entities/catalogo-municipio.entity";
 import { DelitoRelacion } from "../../../database/entities/delito-relacion.entity";
@@ -20,7 +21,6 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
     async findFullByFolio(folioOficialia: string) {
         return this.findOne({
             where: { folioOficialia: folioOficialia },
-            // Mantenemos el select y relations aquí para que el Service esté limpio
             select: {
                 id: true, folioOficialia: true, folioApelacion: true,
                 expedienteCausa: true, fojas: true, esReposicion: true,
@@ -45,6 +45,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
         const repoTipoApel = AppDataSource.getRepository(TipoApelacion);
         const repoTipoEscr = AppDataSource.getRepository(TipoEscrito);
         const repoJuzgado = AppDataSource.getRepository(CatJuzgado);
+        const repoMagistrado = AppDataSource.getRepository(CatMagistrado);
         const repoMunicipio = AppDataSource.getRepository(CatMunicipio);
         const repoLocalidad = AppDataSource.getRepository(CatLocalidad);
         const repoEtnia = AppDataSource.getRepository(CatEtnia);
@@ -55,16 +56,17 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
             where: { activo: true } as any
         };
 
-        // Ejecución en paralelo (Eficiencia pura)
+        // Ejecución en paralelo
         const [
             materias, apelaciones, tiposApelaciones, tiposEscritos,
-            juzgados, municipios, localidades, etnias, delitos
+            juzgados, magistrados, municipios, localidades, etnias, delitos
         ] = await Promise.all([
             repoMateria.find(queryConfig),
             repoApelacion.find(queryConfig),
             repoTipoApel.find(queryConfig),
             repoTipoEscr.find(queryConfig),
             repoJuzgado.find(queryConfig),
+            repoMagistrado.find(queryConfig),
             repoMunicipio.find(queryConfig),
             repoLocalidad.find(queryConfig),
             repoEtnia.find(queryConfig),
@@ -73,7 +75,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
 
         return {
             materias, apelaciones, tiposApelaciones, tiposEscritos,
-            juzgados, municipios, localidades, etnias, delitos
+            juzgados, magistrados, municipios, localidades, etnias, delitos
         };
     },
 

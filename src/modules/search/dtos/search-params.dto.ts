@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsNumberString } from 'class-validator';
+import { IsOptional, IsString, IsNumberString, IsDateString } from 'class-validator';
 
 export class SearchParamsDTO {
     @IsOptional()
@@ -9,7 +9,6 @@ export class SearchParamsDTO {
     @IsNumberString()
     idSala?: number;
 
-    // --- ESTAS FALTABAN ---
     @IsOptional()
     @IsNumberString()
     idNomenclatura?: number;
@@ -21,7 +20,6 @@ export class SearchParamsDTO {
     @IsOptional()
     @IsString()
     folioApelacion?: string;
-    // -----------------------
 
     @IsOptional()
     @IsString()
@@ -31,14 +29,23 @@ export class SearchParamsDTO {
     @IsString()
     nombreParte?: string;
 
+    @IsOptional()
+    @IsDateString({}, { message: 'Fecha de inicio debe ser una fecha válida' })
+    fechaInicio?: string;
+
+    @IsOptional()
+    @IsDateString({}, { message: 'Fecha de fin debe ser una fecha válida' })
+    fechaFin?: string;
+
     static hasAtLeastOneParam(params: any): boolean {
-        // Agregamos todas las propiedades a la validación de "al menos uno"
         const { 
-            folioOficialia, idSala, idNomenclatura, 
-            idTipoApelacion, folioApelacion, expedienteCausa, nombreParte 
+            folioOficialia, idSala, idNomenclatura, idTipoApelacion, 
+            folioApelacion, expedienteCausa, nombreParte, 
+            fechaInicio, fechaFin
         } = params;
         
         return !!(folioOficialia || idSala || idNomenclatura || 
-                  idTipoApelacion || folioApelacion || expedienteCausa || nombreParte);
+                  idTipoApelacion || folioApelacion || expedienteCausa || 
+                  nombreParte || fechaInicio || fechaFin);
     }
 }
