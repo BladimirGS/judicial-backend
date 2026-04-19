@@ -19,14 +19,6 @@ export const ResponseUtil = {
         });
     },
 
-    // Error de cliente (400 Bad Request)
-    badRequest: (res: Response, message: string = 'Datos inválidos') => {
-        return res.status(400).json({
-            status: 'error',
-            message
-        });
-    },
-
     // No encontrado (404 Not Found)
     notFound: (res: Response, message: string = 'Recurso no encontrado') => {
         return res.status(404).json({
@@ -43,6 +35,25 @@ export const ResponseUtil = {
             status: 'error',
             message,
             detail
+        });
+    },
+
+    // Para errores de class-validator (400)
+    validationError: (res: Response, errors: any[]) => {
+        return res.status(400).json({
+            status: 'error',
+            type: 'VALIDATION_ERROR',
+            message: 'Los datos enviados son inválidos',
+            errors // Aquí van los detalles por campo
+        });
+    },
+
+    // Para errores de lógica del Front (400)
+    badRequest: (res: Response, message: string) => {
+        return res.status(400).json({
+            status: 'error',
+            type: 'BAD_REQUEST',
+            message
         });
     }
 };

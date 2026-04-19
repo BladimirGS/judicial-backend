@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import apelacionRoutes from '../modules/apelacion/apelacion.routes';
-import searchRoutes from '../modules/buscador/search.routes';
+import searchRoutes from '../modules/search/search.routes';
 
 const router = Router();
 

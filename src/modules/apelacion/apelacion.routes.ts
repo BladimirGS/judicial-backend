@@ -1,17 +1,15 @@
 import { Router } from 'express';
 import { ApelacionController } from './controllers/apelacion.controller';
 import { AnexoController } from './controllers/anexo.controller';
-// import { AnexoController } from './anexo.controller';
 
 const router = Router();
 
-// Dominio de Apelaciones
-router.get('/catalogos', ApelacionController.getFormCatalogos);
-router.get('/buscar', ApelacionController.getByFolio);
-router.post('/crear', ApelacionController.create);
+router.get('/form-data', ApelacionController.getFormCatalogos);
+router.get('/detail', ApelacionController.getByFolio);
+router.post('/', ApelacionController.create);
 
-// // Dominio de Anexos
-router.get('/anexos/catalogos', AnexoController.getAnexoCatalogos);
-router.post('/anexos/agregar', AnexoController.addAnexos);
+router.get('/anexos/form-data', AnexoController.getAnexoCatalogos);
+
+router.post('/anexos', AnexoController.addAnexos);
 
 export default router;

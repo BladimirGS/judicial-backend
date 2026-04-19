@@ -1,6 +1,6 @@
 import { AppDataSource } from "../../../config/data-source";
 import { ApelacionAnexo } from "../../../database/entities/apelacion-anexo.entity";
-import { CatAnexo } from "../../../database/entities/catalogo-anexo.entity"; // Ajusta la ruta a tu entidad
+import { CatAnexo } from "../../../database/entities/catalogo-anexo.entity";
 import { AddAnexosDTO } from "../dtos/add-anexos.dto";
 import { AnexoCatalogosDTO } from "../dtos/anexo-catalogos.dto";
 
