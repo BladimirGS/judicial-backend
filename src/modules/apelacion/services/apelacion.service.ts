@@ -5,8 +5,8 @@ import { CreateApelacionDTO } from "../dtos/create-apelacion.dto";
 
 export const ApelacionService = {
 
-    async getByFolio(folio: string): Promise<ApelacionDetalleDTO | null> {
-        const entidad = await ApelacionRepository.findFullByFolio(folio);
+    async getByFolio(folioOficialia: string): Promise<ApelacionDetalleDTO | null> {
+        const entidad = await ApelacionRepository.findFullByFolio(folioOficialia);
 
         if (!entidad) return null;
 

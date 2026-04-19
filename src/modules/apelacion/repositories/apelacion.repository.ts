@@ -17,9 +17,9 @@ import { CreateApelacionDTO } from "../dtos/create-apelacion.dto";
 
 export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend({
     
-    async findFullByFolio(folio: string) {
+    async findFullByFolio(folioOficialia: string) {
         return this.findOne({
-            where: { folioOficialia: folio },
+            where: { folioOficialia: folioOficialia },
             // Mantenemos el select y relations aquí para que el Service esté limpio
             select: {
                 id: true, folioOficialia: true, folioApelacion: true,

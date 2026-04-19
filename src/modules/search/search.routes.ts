@@ -5,7 +5,6 @@ import { SearchParamsDTO } from './dtos/search-params.dto';
 
 const router = Router();
 
-// GET /api/search/catalogos
 router.get('/filters', SearchController.getFormDataBuscador);
 router.get('/', validateDTO(SearchParamsDTO), SearchController.search);
 

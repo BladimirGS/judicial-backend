@@ -7,16 +7,16 @@ export const ApelacionController = {
 
 getByFolio: async (req: Request, res: Response) => {
         try {
-            const { folio } = req.query; 
+            const { folioOficialia } = req.query; 
 
-            if (!folio) {
-                return ResponseUtil.badRequest(res, 'El folio es requerido');
+            if (!folioOficialia) {
+                return ResponseUtil.badRequest(res, 'El folio Oficialia es requerido');
             }
 
-            const apelacion = await ApelacionService.getByFolio(String(folio));
+            const apelacion = await ApelacionService.getByFolio(String(folioOficialia));
 
             if (!apelacion) {
-                return ResponseUtil.notFound(res, `No se encontró la apelación: ${folio}`);
+                return ResponseUtil.notFound(res, `No se encontró la apelación: ${folioOficialia}`);
             }
 
             return ResponseUtil.success(res, apelacion);
@@ -43,7 +43,7 @@ getByFolio: async (req: Request, res: Response) => {
 
             return ResponseUtil.created(
                 res, 
-                { id: nuevaApelacion.id, folio: nuevaApelacion.folioOficialia }, 
+                { id: nuevaApelacion.id, folioOficialia: nuevaApelacion.folioOficialia }, 
                 'Apelación y relaciones registradas correctamente'
             );
         } catch (error) {
