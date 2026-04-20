@@ -1,7 +1,7 @@
 export interface CreateParteDTO {
     nombre: string;
     direccion?: string;
-    menorEdad?: boolean;
+    menorEdad: boolean;
     idTipoParte: number;
     idSexo: number;
 }

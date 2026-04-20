@@ -95,15 +95,17 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
             // 2. Procesar Relaciones
             if (data.relaciones?.length > 0) {
                 for (const rel of data.relaciones) {
+
                     
                     // --- CORRECCIÓN AQUÍ: Normalizamos los datos de las partes ---
                     const prepararParte = (parte: any) => ({
-                        ...parte,
+                        nombre: parte.nombre,
+                        idTipoParte: parte.idTipoParte,
+                        idSexo: parte.idSexo,
+                        direccion: parte.direccion || '',
                         idApelacion: apelacionGuardada.id,
-                        // Si direccion no viene, mandamos string vacío
-                        direccion: parte.direccion,
                         // Si menorEdad es null/undefined, mandamos false. !! convierte a boolean.
-                        menorEdad: !!parte.menorEdad 
+                        _menorEdad: parte.menorEdad ? '1' : '0'
                     });
 
                     // Crear Parte Ofendido
