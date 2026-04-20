@@ -28,10 +28,19 @@ export class ApelacionParte {
 
     @Column({ 
         name: 'MenorEdad', 
-        type: 'bit', 
-        default: false 
+        type: 'nchar', 
+        length: 10,
+        default: '0' 
     })
-    menorEdad!: boolean;
+    private _menorEdad!: string;
+    
+    get menorEdad(): boolean {
+        return this._menorEdad === '1';
+    }
+
+    set menorEdad(value: boolean) {
+        this._menorEdad = value ? '1' : '0';
+    }
 
     @Column({ 
         name: 'Activo', 

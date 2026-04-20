@@ -57,9 +57,6 @@ export const SearchRepository = {
                 expedienteCausa: params.expedienteCausa 
             });
         }
-        if (params.expedienteCausa) {
-            query.andWhere("apelacion.expedienteCausa LIKE :causa", { causa: `%${params.expedienteCausa}%` });
-        }
         if (params.idSala) {
             query.andWhere("sala.id = :idSala", { idSala: params.idSala });
         }
