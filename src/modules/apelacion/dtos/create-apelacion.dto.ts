@@ -1,11 +1,11 @@
 
-export class CreateParteDTO {
-    nombre!: string;
+export interface CreateParteDTO {
+    nombre: string;
     direccion?: string;
 
-    menorEdad!: boolean;
-    idTipoParte!: number;
-    idSexo!: number;
+    menorEdad: boolean;
+    idTipoParte: number;
+    idSexo: number;
 }
 
 export interface CreateRelacionDTO {
