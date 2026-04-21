@@ -5,7 +5,7 @@ import { validateApelacion } from './middleware/apelacion.middleware';
 
 const router = Router();
 
-router.post('/', validateApelacion, ApelacionController.create);
+router.post('/', ApelacionController.create);
 router.get('/form-data', ApelacionController.getFormCatalogos);
 router.get('/detail', ApelacionController.getByFolio);
 
