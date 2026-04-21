@@ -9,7 +9,6 @@ export const AnexoService = {
     },
 
     async addAnexos(data: AddAnexosDTO) {
-        // Aquí podrías validar si la Apelación existe antes de intentar guardar
         return await AnexoRepository.saveMultipleAnexos(data);
     }
 };
