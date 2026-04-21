@@ -4,6 +4,7 @@ export interface CatalogoBaseDTO {
 }
 
 export interface ApelacionCatalogosDTO {
+    folioTentativo: string;
     materias: CatalogoBaseDTO[];
     apelaciones: CatalogoBaseDTO[];
     tiposApelaciones: CatalogoBaseDTO[];

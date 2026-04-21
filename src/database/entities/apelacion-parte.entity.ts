@@ -35,7 +35,7 @@ export class ApelacionParte {
     private _menorEdad!: string;
     
     get menorEdad(): boolean {
-        return this._menorEdad === '1';
+        return this._menorEdad?.trim() === '1';
     }
 
     set menorEdad(value: boolean) {

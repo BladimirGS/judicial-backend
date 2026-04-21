@@ -15,6 +15,7 @@ import { TipoApelacion } from "../../../database/entities/tipo-apelacion.entity"
 import { TipoEscrito } from "../../../database/entities/tipo-escrito.entity";
 import { ApelacionCatalogosDTO } from "../dtos/apelacion-catalogos.dto";
 import { CreateApelacionDTO } from "../dtos/create-apelacion.dto";
+import { ApelacionManualHelper } from "./apelacion.helper";
 
 export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend({
     
@@ -40,7 +41,6 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
 
     async getFormCatalogos(): Promise<ApelacionCatalogosDTO> {
         // Definimos las entidades y sus repositorios
-        const repoMateria = AppDataSource.getRepository(CatMateria);
         const repoApelacion = AppDataSource.getRepository(CatApelacion);
         const repoTipoApel = AppDataSource.getRepository(TipoApelacion);
         const repoTipoEscr = AppDataSource.getRepository(TipoEscrito);
@@ -51,6 +51,12 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
         const repoEtnia = AppDataSource.getRepository(CatEtnia);
         const repoDelito = AppDataSource.getRepository(CatDelito);
 
+        const manager = AppDataSource.manager;
+
+        // 1. Ejecutamos la lógica "Manual"
+        const folioTentativo = await ApelacionManualHelper.calcularFolioTramite(manager);
+        const materias = await ApelacionManualHelper.getMateriasManual(manager);
+
         const queryConfig = {
             select: { id: true, descripcion: true } as any,
             where: { activo: true } as any
@@ -58,10 +64,9 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
 
         // Ejecución en paralelo
         const [
-            materias, apelaciones, tiposApelaciones, tiposEscritos,
+            apelaciones, tiposApelaciones, tiposEscritos,
             juzgados, magistrados, municipios, localidades, etnias, delitos
         ] = await Promise.all([
-            repoMateria.find(queryConfig),
             repoApelacion.find(queryConfig),
             repoTipoApel.find(queryConfig),
             repoTipoEscr.find(queryConfig),
@@ -74,7 +79,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
         ]);
 
         return {
-            materias, apelaciones, tiposApelaciones, tiposEscritos,
+            folioTentativo, materias, apelaciones, tiposApelaciones, tiposEscritos,
             juzgados, magistrados, municipios, localidades, etnias, delitos
         };
     },
