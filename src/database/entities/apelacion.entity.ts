@@ -131,16 +131,16 @@ export class Apelacion {
     anexos!: ApelacionAnexo[];
 
     // Foreign Keys
-    @Column({ name: 'IdSala' }) idSala!: number;
-    @Column({ name: 'IdSalaAnterior' }) idSalaAnterior!: number;
-    @Column({ name: 'IdCatMateria' }) idMateria!: number;
-    @Column({ name: 'IdCatNomenclatura' }) idNomenclatura!: number;
-    @Column({ name: 'IdCatApelacion' }) idApelacion!: number;
-    @Column({ name: 'IdCatTipoApelacion' }) idTipoApelacion!: number;
-    @Column({ name: 'IdCatTipoEscrito' }) idTipoEscrito!: number;
+    @Column({ name: 'IdSala', nullable:true }) idSala!: number;
+    @Column({ name: 'IdSalaAnterior', nullable:true }) idSalaAnterior!: number;
+    @Column({ name: 'IdCatMateria', nullable:true }) idMateria!: number;
+    @Column({ name: 'IdCatNomenclatura', nullable: true }) idNomenclatura: number = 1;
+    @Column({ name: 'IdCatApelacion', nullable:true }) idApelacion!: number;
+    @Column({ name: 'IdCatTipoApelacion', nullable:true }) idTipoApelacion!: number;
+    @Column({ name: 'IdCatTipoEscrito', nullable: true }) idTipoEscrito!: number;
     @Column({ name: 'IdCatJuzgadoOrigen' }) idJuzgado!: number;
-    @Column({ name: 'IdMagistradoAsignado' }) idMagistradoAsignado!: number;
-    @Column({ name: 'IdCatMunicipio' }) idMunicipio!: number;
-    @Column({ name: 'IdCatLocalidad' }) idLocalidad!: number;
-    @Column({ name: 'IdEtnia' }) idEtnia!: number;
+    @Column({ name: 'IdMagistradoAsignado', nullable:true }) idMagistradoAsignado!: number;
+    @Column({ name: 'IdCatMunicipio', nullable: true }) idMunicipio!: number;
+    @Column({ name: 'IdCatLocalidad', nullable:true }) idLocalidad!: number;
+    @Column({ name: 'IdEtnia', nullable:true }) idEtnia!: number;
 }
