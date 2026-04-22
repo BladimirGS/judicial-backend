@@ -58,6 +58,11 @@ export const ApelacionService = {
                 descripcion: entidad.etnia.descripcion 
             } : null,
 
+            magistrado: entidad.catMagistrado ? { 
+                id: entidad.catMagistrado.id, 
+                descripcion: entidad.catMagistrado.descripcion 
+            } : null,
+
             // Relaciones (El mapeo interno de ofendido/procesado ya incluía IDs)
             relaciones: entidad.relaciones?.map(r => ({
                 id: r.id,

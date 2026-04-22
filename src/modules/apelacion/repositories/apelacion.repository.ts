@@ -7,7 +7,6 @@ import { CatEtnia } from "../../../database/entities/catalogo-etnia.entity";
 import { CatJuzgado } from "../../../database/entities/catalogo-juzgado.entity";
 import { CatLocalidad } from "../../../database/entities/catalogo-localidad.entity";
 import { CatMagistrado } from "../../../database/entities/catalogo-magistrado.entity";
-import { CatMateria } from "../../../database/entities/catalogo-materia.entity";
 import { CatMunicipio } from "../../../database/entities/catalogo-municipio.entity";
 import { DelitoRelacion } from "../../../database/entities/delito-relacion.entity";
 import { Relacion } from "../../../database/entities/relacion.entity";
@@ -28,7 +27,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
                 fechaAuto: true, observaciones: true, asunto: true, lugarHechos: true
             },
             relations: {
-                materia: true, tipoApelacion: true, tipoEscrito: true,
+                materia: true, tipoApelacion: true, tipoEscrito: true, catMagistrado: true,
                 catJuzgado: true, municipio: true, localidad: true, etnia: true,
                 relaciones: {
                     ofendido: { sexo: true, tipoParte: true },

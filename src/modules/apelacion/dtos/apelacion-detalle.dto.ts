@@ -42,5 +42,6 @@ export interface ApelacionDetalleDTO {
     municipio: CatalogoBaseDTO | null;
     localidad: CatalogoBaseDTO | null;
     etnia: CatalogoBaseDTO | null;
+    magistrado: CatalogoBaseDTO | null;
     relaciones: RelacionDetalleDTO[];
 }
