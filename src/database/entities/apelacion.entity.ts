@@ -134,7 +134,7 @@ export class Apelacion {
     @Column({ name: 'IdSala', nullable:true }) idSala!: number;
     @Column({ name: 'IdSalaAnterior', nullable:true }) idSalaAnterior!: number;
     @Column({ name: 'IdCatMateria', nullable:true }) idMateria!: number;
-    @Column({ name: 'IdCatNomenclatura', nullable: true }) idNomenclatura: number = 1;
+    @Column({ name: 'IdCatNomenclatura', nullable: true }) idNomenclatura!: number;
     @Column({ name: 'IdCatApelacion', nullable:true }) idApelacion!: number;
     @Column({ name: 'IdCatTipoApelacion', nullable:true }) idTipoApelacion!: number;
     @Column({ name: 'IdCatTipoEscrito', nullable: true }) idTipoEscrito!: number;

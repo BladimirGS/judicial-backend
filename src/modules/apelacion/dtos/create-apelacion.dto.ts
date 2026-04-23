@@ -17,8 +17,6 @@ export interface CreateRelacionDTO {
 export interface CreateApelacionDTO {
     idMateria: number;
 
-    idNomenclatura?: number;
-
     idApelacion: number;
 
     idTipoApelacion: number;
@@ -35,11 +33,10 @@ export interface CreateApelacionDTO {
 
     folioOficialia: string;
 
-    folioApelacion?: string;
-
     folioOficio?: string;
 
     expedienteCausa: string;
+
     fojas?: number;
 
     fechaAuto: Date;
@@ -49,6 +46,7 @@ export interface CreateApelacionDTO {
     asunto?: string;
 
     observaciones?: string;
+    
     esReposicion?: boolean;
 
     relaciones: CreateRelacionDTO[];

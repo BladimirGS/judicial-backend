@@ -1,9 +1,9 @@
 import { EntityManager, In } from "typeorm";
 import { CatMateria } from "../../../database/entities/catalogo-materia.entity";
 
-export class ApelacionManualHelper {
-    
-    static async getMateriasManual(manager: EntityManager) {
+export class ApelacionNativeRepository {
+    // Simula PA_SEL_PCF_CAT_CboMateriasSalas
+    static async getMaterias(manager: EntityManager) {
         return await manager.find(CatMateria, {
             select: ["id", "descripcion"],
             where: {
@@ -14,15 +14,10 @@ export class ApelacionManualHelper {
         });
     }
 
-    /**
-     * Simula PA_INS_PCF_FolioTramite
-     * Formato: 0001/2026 (Global por año)
-     */
+
+    // Simula PA_INS_PCF_FolioTramite
     static async calcularFolioTramite(manager: EntityManager): Promise<string> {
         const anio = new Date().getFullYear().toString();
-        
-        // Buscamos el máximo basado en los primeros 4 dígitos del FolioOficialia
-        // que coincidan con el año al final (después de la diagonal)
         const result = await manager.query(`
             SELECT MAX(CAST(LEFT(FolioOficialia, 4) AS INT)) as maximo 
             FROM OFA_Apelaciones 
@@ -33,10 +28,8 @@ export class ApelacionManualHelper {
         return `${siguiente.toString().padStart(4, '0')}/${anio}`;
     }
 
-    /**
-     * Simula PA_SEL_FolioNomenclaturaToca
-     * Formato: 0001/2026 (Filtrado por Sala y Nomenclatura)
-     */
+
+    // Simula PA_SEL_FolioNomenclaturaToca
     static async calcularFolioExpediente(
         manager: EntityManager, 
         idSala: number, 

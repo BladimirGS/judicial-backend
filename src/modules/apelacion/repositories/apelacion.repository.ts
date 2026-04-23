@@ -12,9 +12,10 @@ import { DelitoRelacion } from "../../../database/entities/delito-relacion.entit
 import { Relacion } from "../../../database/entities/relacion.entity";
 import { TipoApelacion } from "../../../database/entities/tipo-apelacion.entity";
 import { TipoEscrito } from "../../../database/entities/tipo-escrito.entity";
+import { TipoParte } from "../../../database/entities/tipo-parte.entity";
 import { ApelacionCatalogosDTO } from "../dtos/apelacion-catalogos.dto";
 import { CreateApelacionDTO } from "../dtos/create-apelacion.dto";
-import { ApelacionManualHelper } from "./apelacion.helper";
+import { ApelacionNativeRepository } from "./apelacion-native.repository";
 
 export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend({
     
@@ -37,49 +38,37 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
             }
         });
     },
-
+    
     async getFormCatalogos(): Promise<ApelacionCatalogosDTO> {
-        // Definimos las entidades y sus repositorios
-        const repoApelacion = AppDataSource.getRepository(CatApelacion);
-        const repoTipoApel = AppDataSource.getRepository(TipoApelacion);
-        const repoTipoEscr = AppDataSource.getRepository(TipoEscrito);
-        const repoJuzgado = AppDataSource.getRepository(CatJuzgado);
-        const repoMagistrado = AppDataSource.getRepository(CatMagistrado);
-        const repoMunicipio = AppDataSource.getRepository(CatMunicipio);
-        const repoLocalidad = AppDataSource.getRepository(CatLocalidad);
-        const repoEtnia = AppDataSource.getRepository(CatEtnia);
-        const repoDelito = AppDataSource.getRepository(CatDelito);
-
         const manager = AppDataSource.manager;
 
-        // 1. Ejecutamos la lógica "Manual"
-        const folioTentativo = await ApelacionManualHelper.calcularFolioTramite(manager);
-        const materias = await ApelacionManualHelper.getMateriasManual(manager);
+        const folioTentativo = await ApelacionNativeRepository.calcularFolioTramite(manager);
+        const materias = await ApelacionNativeRepository.getMaterias(manager);
 
         const queryConfig = {
             select: { id: true, descripcion: true } as any,
             where: { activo: true } as any
         };
 
-        // Ejecución en paralelo
         const [
-            apelaciones, tiposApelaciones, tiposEscritos,
-            juzgados, magistrados, municipios, localidades, etnias, delitos
+            apelaciones, tiposApelaciones, tiposEscritos, juzgados,
+            magistrados, municipios, localidades, etnias, delitos, tipoParte
         ] = await Promise.all([
-            repoApelacion.find(queryConfig),
-            repoTipoApel.find(queryConfig),
-            repoTipoEscr.find(queryConfig),
-            repoJuzgado.find(queryConfig),
-            repoMagistrado.find(queryConfig),
-            repoMunicipio.find(queryConfig),
-            repoLocalidad.find(queryConfig),
-            repoEtnia.find(queryConfig),
-            repoDelito.find(queryConfig),
+            manager.find(CatApelacion, queryConfig),
+            manager.find(TipoApelacion, queryConfig),
+            manager.find(TipoEscrito, queryConfig),
+            manager.find(CatJuzgado, queryConfig),
+            manager.find(CatMagistrado, queryConfig),
+            manager.find(CatMunicipio, queryConfig),
+            manager.find(CatLocalidad, queryConfig),
+            manager.find(CatEtnia, queryConfig),
+            manager.find(CatDelito, queryConfig),
+            manager.find(TipoParte, queryConfig),
         ]);
 
         return {
             folioTentativo, materias, apelaciones, tiposApelaciones, tiposEscritos,
-            juzgados, magistrados, municipios, localidades, etnias, delitos
+            juzgados, magistrados, municipios, localidades, etnias, delitos, tipoParte
         };
     },
 
@@ -88,27 +77,29 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
         await queryRunner.connect();
         await queryRunner.startTransaction();
 
+        const manager = AppDataSource.manager;
+
+        const folioOficialia = await ApelacionNativeRepository.calcularFolioTramite(manager);
+
         try {
-            // 1. Guardar Apelación
+            // Guardar Apelación
             const nuevaApelacion = queryRunner.manager.create(Apelacion, {
                 ...data,
+                folioOficialia: folioOficialia,
                 idSala: 1 
             });
             const apelacionGuardada = await queryRunner.manager.save(nuevaApelacion);
 
-            // 2. Procesar Relaciones
+            // Procesar Relaciones
             if (data.relaciones?.length > 0) {
                 for (const rel of data.relaciones) {
 
-                    
-                    // --- CORRECCIÓN AQUÍ: Normalizamos los datos de las partes ---
                     const prepararParte = (parte: any) => ({
                         nombre: parte.nombre,
                         idTipoParte: parte.idTipoParte,
                         idSexo: parte.idSexo,
                         direccion: parte.direccion || '',
                         idApelacion: apelacionGuardada.id,
-                        // Si menorEdad es null/undefined, mandamos false. !! convierte a boolean.
                         _menorEdad: parte.menorEdad ? '1' : '0'
                     });
 
@@ -122,7 +113,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
                         queryRunner.manager.create(ApelacionParte, prepararParte(rel.procesado))
                     );
 
-                    // 3. Crear la unión (Relación)
+                    // Crear la Relación
                     const nuevaRelacion = await queryRunner.manager.save(
                         queryRunner.manager.create(Relacion, {
                             idApelacion: apelacionGuardada.id,
@@ -131,7 +122,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
                         })
                     );
 
-                    // 4. Crear Delitos vinculados
+                    // Crear Delitos vinculados
                     if (rel.delitoRelaciones?.length > 0) {
                         const delitos = rel.delitoRelaciones.map(dr => 
                             queryRunner.manager.create(DelitoRelacion, {
