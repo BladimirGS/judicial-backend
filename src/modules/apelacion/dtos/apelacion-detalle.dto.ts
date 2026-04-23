@@ -8,7 +8,7 @@ export interface RelacionDetalleDTO {
         direccion: string | null;
         menorEdad: boolean | null;
         sexo: string | null;
-        tipoParte: string | null;
+        tipoParte: CatalogoBaseDTO | null;
     };
     procesado: {
         id: number;
@@ -16,7 +16,7 @@ export interface RelacionDetalleDTO {
         direccion: string | null;
         menorEdad: boolean | null;
         sexo: string | null;
-        tipoParte: string | null;
+        tipoParte: CatalogoBaseDTO | null;
     };
     delitosRelacion: Array<{
         id: number;

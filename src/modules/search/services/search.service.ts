@@ -43,7 +43,8 @@ export const SearchService = {
                 id: a.id,
                 descripcion: a.idAnexo > 0 ? a.anexo?.descripcion : a.otroAnexo,
                 esValor: a.esValor,
-                monto: a.monto ?? null
+                monto: a.monto ?? null,
+                cantidad: a.cantidad ?? null
             })) ?? [],
 
             // Mapeo plano de partes
