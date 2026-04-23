@@ -20,7 +20,7 @@ export interface RelacionDetalleDTO {
     };
     delitosRelacion: Array<{
         id: number;
-        nombreDelito: CatalogoBaseDTO | null;
+        delito: CatalogoBaseDTO | null;
     }>;
 }
 

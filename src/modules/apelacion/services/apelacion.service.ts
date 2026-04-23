@@ -2,6 +2,7 @@ import { ApelacionRepository } from "../repositories/apelacion.repository";
 import { ApelacionDetalleDTO } from "../dtos/apelacion-detalle.dto";
 import { ApelacionCatalogosDTO } from "../dtos/apelacion-catalogos.dto";
 import { CreateApelacionDTO } from "../dtos/create-apelacion.dto";
+import { mapCatalogo, mapParte } from "../utils/apelacion.mapper";
 
 export const ApelacionService = {
 
@@ -22,72 +23,24 @@ export const ApelacionService = {
             asunto: entidad.asunto,
             lugarHechos: entidad.lugarHechos,
 
-            // MAPEO DE CATÁLOGOS COMO OBJETOS
-            materia: entidad.materia ? { 
-                id: entidad.materia.id, 
-                descripcion: entidad.materia.descripcion 
-            } : null,
+            // Mapeo de catàlogos
+            materia: mapCatalogo(entidad.materia),
+            tipoApelacion: mapCatalogo(entidad.tipoApelacion),
+            tipoEscrito: mapCatalogo(entidad.tipoEscrito),
+            juzgadoOrigen: mapCatalogo(entidad.catJuzgado),
+            municipio: mapCatalogo(entidad.municipio),
+            localidad: mapCatalogo(entidad.localidad),
+            etnia: mapCatalogo(entidad.etnia),
+            magistrado: mapCatalogo(entidad.catMagistrado),
 
-            tipoApelacion: entidad.tipoApelacion ? { 
-                id: entidad.tipoApelacion.id, 
-                descripcion: entidad.tipoApelacion.descripcion 
-            } : null,
-
-            tipoEscrito: entidad.tipoEscrito ? { 
-                id: entidad.tipoEscrito.id, 
-                descripcion: entidad.tipoEscrito.descripcion 
-            } : null,
-
-            juzgadoOrigen: entidad.catJuzgado ? { 
-                id: entidad.catJuzgado.id, 
-                descripcion: entidad.catJuzgado.descripcion 
-            } : null,
-
-            municipio: entidad.municipio ? { 
-                id: entidad.municipio.id, 
-                descripcion: entidad.municipio.descripcion 
-            } : null,
-
-            localidad: entidad.localidad ? { 
-                id: entidad.localidad.id, 
-                descripcion: entidad.localidad.descripcion 
-            } : null,
-
-            etnia: entidad.etnia ? { 
-                id: entidad.etnia.id, 
-                descripcion: entidad.etnia.descripcion 
-            } : null,
-
-            magistrado: entidad.catMagistrado ? { 
-                id: entidad.catMagistrado.id, 
-                descripcion: entidad.catMagistrado.descripcion 
-            } : null,
-
-            // Relaciones (El mapeo interno de ofendido/procesado ya incluía IDs)
+            // Relacion de partes
             relaciones: entidad.relaciones?.map(r => ({
                 id: r.id,
-                ofendido: {
-                    id: r.ofendido?.id,
-                    nombre: r.ofendido?.nombre ?? null,
-                    direccion: r.ofendido?.direccion ?? null,
-                    menorEdad: Boolean(r.ofendido?.menorEdad) ?? false,
-                    sexo: r.ofendido?.sexo?.descripcion ?? null,
-                    tipoParte: r.ofendido?.tipoParte?.descripcion ?? null
-                },
-                procesado: {
-                    id: r.procesado?.id,
-                    nombre: r.procesado?.nombre ?? null,
-                    direccion: r.procesado?.direccion ?? null,
-                    menorEdad: Boolean(r.procesado?.menorEdad) ?? false,
-                    sexo: r.procesado?.sexo?.descripcion ?? null,
-                    tipoParte: r.procesado?.tipoParte?.descripcion ?? null
-                },
+                ofendido: mapParte(r.ofendido),
+                procesado: mapParte(r.procesado),
                 delitosRelacion: r.delitoRelaciones?.map(dr => ({
                     id: dr.id,
-                    nombreDelito: entidad.municipio ? { 
-                        id: entidad.municipio.id, 
-                        descripcion: entidad.municipio.descripcion 
-                    } : null,
+                    delito: mapCatalogo(dr.delito)
                 })) ?? []
             })) ?? []
         };

@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { ApelacionController } from './controllers/apelacion.controller';
 import { AnexoController } from './controllers/anexo.controller';
-import { validateApelacion } from './middleware/apelacion.middleware';
 
 const router = Router();
 
