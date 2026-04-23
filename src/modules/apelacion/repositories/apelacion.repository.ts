@@ -8,6 +8,7 @@ import { CatJuzgado } from "../../../database/entities/catalogo-juzgado.entity";
 import { CatLocalidad } from "../../../database/entities/catalogo-localidad.entity";
 import { CatMagistrado } from "../../../database/entities/catalogo-magistrado.entity";
 import { CatMunicipio } from "../../../database/entities/catalogo-municipio.entity";
+import { CatSexo } from "../../../database/entities/catalogo-sexo.entity";
 import { DelitoRelacion } from "../../../database/entities/delito-relacion.entity";
 import { Relacion } from "../../../database/entities/relacion.entity";
 import { TipoApelacion } from "../../../database/entities/tipo-apelacion.entity";
@@ -51,8 +52,8 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
         };
 
         const [
-            apelaciones, tiposApelaciones, tiposEscritos, juzgados,
-            magistrados, municipios, localidades, etnias, delitos, tipoParte
+            apelaciones, tiposApelaciones, tiposEscritos, juzgados, magistrados, 
+            municipios, localidades, etnias, delitos, tiposPartes, sexos
         ] = await Promise.all([
             manager.find(CatApelacion, queryConfig),
             manager.find(TipoApelacion, queryConfig),
@@ -64,11 +65,12 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
             manager.find(CatEtnia, queryConfig),
             manager.find(CatDelito, queryConfig),
             manager.find(TipoParte, queryConfig),
+            manager.find(CatSexo, queryConfig),
         ]);
 
         return {
-            folioTentativo, materias, apelaciones, tiposApelaciones, tiposEscritos,
-            juzgados, magistrados, municipios, localidades, etnias, delitos, tipoParte
+            folioTentativo, materias, apelaciones, tiposApelaciones, tiposEscritos, juzgados, 
+            magistrados, municipios, localidades, etnias, delitos, tiposPartes, sexos
         };
     },
 

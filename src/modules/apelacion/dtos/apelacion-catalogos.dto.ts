@@ -14,6 +14,7 @@ export interface ApelacionCatalogosDTO {
     localidades: CatalogoBaseDTO[];
     etnias: CatalogoBaseDTO[];
     delitos: CatalogoBaseDTO[];
-    tipoParte: CatalogoBaseDTO[];
+    tiposPartes: CatalogoBaseDTO[];
     magistrados: CatalogoBaseDTO[];
+    sexos: CatalogoBaseDTO[];
 }
