@@ -10,9 +10,17 @@ export class TipoParte {
         name: 'Descripcion', 
         type: 'varchar', 
         length: 25, 
-        nullable: true 
+        nullable: false 
     })
     descripcion!: string;
+
+    @Column({ 
+        name: 'Materia', 
+        type: 'varchar', 
+        length: 50, 
+        nullable: true 
+    })
+    materia!: string;
 
     @Column({ 
         name: 'Activo', 

@@ -13,7 +13,6 @@ import { DelitoRelacion } from "../../../database/entities/delito-relacion.entit
 import { Relacion } from "../../../database/entities/relacion.entity";
 import { TipoApelacion } from "../../../database/entities/tipo-apelacion.entity";
 import { TipoEscrito } from "../../../database/entities/tipo-escrito.entity";
-import { TipoParte } from "../../../database/entities/tipo-parte.entity";
 import { ApelacionCatalogosDTO } from "../dtos/apelacion-catalogos.dto";
 import { CreateApelacionDTO } from "../dtos/create-apelacion.dto";
 import { ApelacionNativeRepository } from "./apelacion-native.repository";
@@ -45,6 +44,7 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
 
         const folioTentativo = await ApelacionNativeRepository.calcularFolioTramite(manager);
         const materias = await ApelacionNativeRepository.getMaterias(manager);
+        const tiposPartes = await ApelacionNativeRepository.getTiposPartes(manager);
 
         const queryConfig = {
             select: { id: true, descripcion: true } as any,
@@ -52,8 +52,8 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
         };
 
         const [
-            apelaciones, tiposApelaciones, tiposEscritos, juzgados, magistrados, 
-            municipios, localidades, etnias, delitos, tiposPartes, sexos
+            apelaciones, tiposApelaciones, tiposEscritos, juzgados, 
+            magistrados, municipios, localidades, etnias, delitos, sexos
         ] = await Promise.all([
             manager.find(CatApelacion, queryConfig),
             manager.find(TipoApelacion, queryConfig),
@@ -64,7 +64,6 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
             manager.find(CatLocalidad, queryConfig),
             manager.find(CatEtnia, queryConfig),
             manager.find(CatDelito, queryConfig),
-            manager.find(TipoParte, queryConfig),
             manager.find(CatSexo, queryConfig),
         ]);
 

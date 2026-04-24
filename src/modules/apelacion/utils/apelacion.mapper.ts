@@ -11,6 +11,6 @@ export const mapParte = (parte: any) => {
         direccion: parte?.direccion ?? null,
         menorEdad: Boolean(parte?.menorEdad) ?? false,
         sexo: parte?.sexo?.descripcion ?? null,
-        tipoParte: mapCatalogo(parte?.tipoParte)
+        tipoParte: parte?.tipoParte?.descripcion
     };
 }

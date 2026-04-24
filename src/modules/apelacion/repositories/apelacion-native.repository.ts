@@ -1,5 +1,6 @@
 import { EntityManager, In } from "typeorm";
 import { CatMateria } from "../../../database/entities/catalogo-materia.entity";
+import { TipoParte } from "../../../database/entities/tipo-parte.entity";
 
 export class ApelacionNativeRepository {
     // Simula PA_SEL_PCF_CAT_CboMateriasSalas
@@ -14,6 +15,16 @@ export class ApelacionNativeRepository {
         });
     }
 
+    // Simula PA_SEL_PCF_CAT_CboPartes
+    static async getTiposPartes(manager: EntityManager) {
+        return await manager.find(TipoParte, {
+            select : ["id", "descripcion"],
+            where: {
+                activo: true,
+                materia: "P"
+            }
+        })
+    }
 
     // Simula PA_INS_PCF_FolioTramite
     static async calcularFolioTramite(manager: EntityManager): Promise<string> {
