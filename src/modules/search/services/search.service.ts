@@ -2,6 +2,7 @@ import { SearchRepository } from "../repositories/search.repository";
 import { SearchCatalogosDTO } from "../dtos/search-catalogos.dto";
 import { SearchParamsDTO } from "../dtos/search-params.dto";
 import * as ExcelJS from 'exceljs';
+import { TipoParte } from "../../../database/entities/tipo-parte.entity";
 
 export const SearchService = {
     async getFormDataBuscador(): Promise<SearchCatalogosDTO> {
@@ -48,24 +49,13 @@ export const SearchService = {
             })) ?? [],
 
             // Mapeo plano de partes
-            partes: apelacion.relaciones?.flatMap(r => {
-                const lista = [];
-                if (r.ofendido) lista.push({
-                    tipo: 'OFENDIDO',
-                    nombre: r.ofendido.nombre,
-                    direccion: r.ofendido.direccion,
-                    menorEdad: r.ofendido.menorEdad,
-                    sexo: r.ofendido.sexo?.descripcion
-                });
-                if (r.procesado) lista.push({
-                    tipo: 'PROCESADO',
-                    nombre: r.procesado.nombre,
-                    direccion: r.procesado.direccion,
-                    menorEdad: r.procesado.menorEdad,
-                    sexo: r.procesado.sexo?.descripcion
-                });
-                return lista;
-            }) ?? []
+            partes: apelacion.apelacionPartes.map(ap => ({
+                nombre: ap.nombre ?? null,
+                direccion: ap.direccion ?? null,
+                menorEdad: ap.menorEdad ?? null,
+                sexo: ap.sexo.descripcion ?? null,
+                tipoParte: ap.tipoParte.descripcion ?? null
+            })) ?? []
         }));
     },
 

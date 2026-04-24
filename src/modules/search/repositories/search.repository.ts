@@ -6,6 +6,7 @@ import { SearchCatalogosDTO } from "../dtos/search-catalogos.dto";
 import { SearchParamsDTO } from "../dtos/search-params.dto";
 import { Apelacion } from "../../../database/entities/apelacion.entity";
 import { Relacion } from "../../../database/entities/relacion.entity";
+import { ApelacionParte } from "../../../database/entities/apelacion-parte.entity";
 
 export const SearchRepository = {
     async getSearchCatalogos(): Promise<SearchCatalogosDTO> {
@@ -31,15 +32,9 @@ export const SearchRepository = {
             .leftJoinAndSelect("apelacion.tipoApelacion", "tipoApelacion")
             .leftJoinAndSelect("apelacion.anexos", "anexo")
             .leftJoinAndSelect("anexo.anexo", "catAnexo")
-            .leftJoinAndSelect("apelacion.relaciones", "rel")
-            .leftJoinAndSelect("rel.ofendido", "ofendido")
-            .leftJoinAndSelect("ofendido.sexo", "oSexe")
-            .leftJoinAndSelect("ofendido.tipoParte", "oTipo")
-            .leftJoinAndSelect("rel.procesado", "procesado")
-            .leftJoinAndSelect("procesado.sexo", "pSexe")
-            .leftJoinAndSelect("procesado.tipoParte", "pTipo")
-            .leftJoinAndSelect("rel.delitoRelaciones", "dr")
-            .leftJoinAndSelect("dr.delito", "delito");
+            .leftJoinAndSelect("apelacion.apelacionPartes", "ap")
+            .leftJoinAndSelect("ap.sexo", "Sexo")
+            .leftJoinAndSelect("ap.tipoParte", "TipoParte")
 
         // Filtros Dinámicos
         if (params.folioOficialia) {
@@ -103,11 +98,9 @@ export const SearchRepository = {
             query.andWhere(qb => {
                 const sub = qb.subQuery()
                     .select("1")
-                    .from(Relacion, "rel2")
-                    .leftJoin("rel2.ofendido", "o2")
-                    .leftJoin("rel2.procesado", "p2")
-                    .where("rel2.idApelacion = apelacion.id")
-                    .andWhere("(o2.nombre LIKE :parte OR p2.nombre LIKE :parte)")
+                    .from(ApelacionParte, "ap")
+                    .where("ap.idApelacion = apelacion.id")
+                    .andWhere("(ap.nombre LIKE :parte)")
                     .getQuery();
                 return `EXISTS ${sub}`;
             }).setParameter("parte", `%${params.nombreParte}%`);
