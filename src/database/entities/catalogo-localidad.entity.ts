@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { CatMunicipio } from "./catalogo-municipio.entity";
 
 @Entity({ name: 'OFA_CAT_Localidades' })
 export class CatLocalidad {
@@ -20,4 +21,10 @@ export class CatLocalidad {
         default: true 
     })
     activo!: boolean;
+
+    @ManyToOne(() => CatMunicipio)
+    @JoinColumn({ name: 'IdCatMunicipio' })
+    municipio!: CatMunicipio;
+
+    @Column({ name: 'IdCatMunicipio', nullable: true }) idMunicipio!: number;
 }

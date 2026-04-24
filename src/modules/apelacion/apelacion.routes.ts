@@ -6,6 +6,7 @@ const router = Router();
 
 router.post('/', ApelacionController.create);
 router.get('/form-data', ApelacionController.getFormCatalogos);
+router.get('/localidades', ApelacionController.getFormLocalidades);
 router.get('/detail', ApelacionController.getByFolio);
 
 router.post('/anexos', AnexoController.addAnexos);

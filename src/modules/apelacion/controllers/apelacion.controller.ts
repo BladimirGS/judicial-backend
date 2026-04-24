@@ -36,6 +36,22 @@ getByFolio: async (req: Request, res: Response) => {
         }
     },
 
+    getFormLocalidades: async (req: Request, res: Response) => {
+        try {
+            const { idMunicipio } = req.query; 
+
+            if (!idMunicipio) {
+                return ResponseUtil.badRequest(res, 'El idmunicipio es requerido');
+            }
+
+            const data = await ApelacionService.getFormLocalidades(Number(idMunicipio));
+            return ResponseUtil.success(res, data, 'Catálogo de Localidades cargados correctamente');
+        } catch (error) {
+            console.error('Error en getFormLocalidades:', error);
+            return ResponseUtil.error(res, 'No se pudieron obtener las localidades para el formulario');
+        }
+    },
+
     create: async (req: Request, res: Response) => {
         try {
             const nuevaApelacion = await ApelacionService.create(req.body);

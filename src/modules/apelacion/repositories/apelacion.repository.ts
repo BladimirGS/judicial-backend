@@ -72,6 +72,16 @@ export const ApelacionRepository = AppDataSource.getRepository(Apelacion).extend
             magistrados, municipios, localidades, etnias, delitos, tiposPartes, sexos
         };
     },
+    
+    async getFormLocalidades(idMunicipio: number) {
+        const manager = AppDataSource.manager;
+
+        const localidades = await ApelacionNativeRepository.getLocalidades(manager, idMunicipio);
+
+        return {
+            localidades
+        };
+    },
 
     async createFullApelacion(data: CreateApelacionDTO) {
         const queryRunner = AppDataSource.createQueryRunner();

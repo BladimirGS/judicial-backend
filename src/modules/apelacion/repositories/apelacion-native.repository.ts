@@ -1,6 +1,7 @@
 import { EntityManager, In } from "typeorm";
 import { CatMateria } from "../../../database/entities/catalogo-materia.entity";
 import { TipoParte } from "../../../database/entities/tipo-parte.entity";
+import { CatLocalidad } from "../../../database/entities/catalogo-localidad.entity";
 
 export class ApelacionNativeRepository {
     // Simula PA_SEL_PCF_CAT_CboMateriasSalas
@@ -22,6 +23,17 @@ export class ApelacionNativeRepository {
             where: {
                 activo: true,
                 materia: "P"
+            }
+        })
+    }
+
+    // Simula PA_SEL_PCF_CAT_CboPartes
+    static async getLocalidades(manager: EntityManager, idMunicipio: number) {
+        return await manager.find(CatLocalidad, {
+            select : ["id", "descripcion"],
+            where: {
+                activo: true,
+                idMunicipio: idMunicipio
             }
         })
     }

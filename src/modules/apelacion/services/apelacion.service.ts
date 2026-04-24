@@ -50,6 +50,10 @@ export const ApelacionService = {
         return await ApelacionRepository.getFormCatalogos();
     },
 
+    async getFormLocalidades(idMunicipio: number) {
+        return await ApelacionRepository.getFormLocalidades(idMunicipio);
+    },
+
     async create(data: CreateApelacionDTO) {
         return await ApelacionRepository.createFullApelacion(data);
     }
