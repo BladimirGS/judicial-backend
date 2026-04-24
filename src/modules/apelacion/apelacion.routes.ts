@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { ApelacionController } from './controllers/apelacion.controller';
 import { AnexoController } from './controllers/anexo.controller';
+import { validateApelacion } from './validators/apelacion.validate';
 
 const router = Router();
 
-router.post('/', ApelacionController.create);
+router.post('/', validateApelacion, ApelacionController.create);
 router.get('/form-data', ApelacionController.getFormCatalogos);
 router.get('/localidades', ApelacionController.getFormLocalidades);
 router.get('/detail', ApelacionController.getByFolio);
